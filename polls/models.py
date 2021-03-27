@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 import uuid
 
 # Create your models here.
@@ -33,7 +34,7 @@ class Query(models.Model):
         choices=QUERY_TYPE_CHOICES,
         default=TEXT
     )
-    response_options = models.JSONField(
+    response_options = JSONField(
         null=True,
         blank=True,
         default=None,
@@ -45,19 +46,19 @@ class Query(models.Model):
 
 class Person(models.Model):
     uuid = models.CharField(
-        max_length='36',
+        max_length=36,
         unique=True
     )
     name = models.CharField(
-        max_length='127',
-        blank=True
+        max_length=127,
+        blank=True,
         null=True,
         default=None
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self uuid = str(uuid.uuid4())
+        self.uuid = str(uuid.uuid4())
 
 
 class Response(models.Model):
@@ -71,4 +72,4 @@ class Response(models.Model):
         on_delete=models.CASCADE,
         related_name='responses'
     )
-    response = models.JSONField()
+    response = JSONField()
