@@ -1,1 +1,4 @@
 .venv
+*.pyc
+VOLUMES
+docker-compose.override.yml

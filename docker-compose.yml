@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    container_name: db
+    volumes:
+      - db:/var/lib/postgresql/data
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: polls
+      POSTGRES_PASSWORD: docker
+
+    networks:
+      network:
+        aliases:
+          - db
+
+volumes:
+  db:
+    driver_opts:
+      type: none
+      o: bind
+      device: /Volumes/HDD/Documents/MyProjects/quize_service/VOLUMES/db
+
+networks:
+  network:

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 't3kl81p8dot55u)7z)%9k#%aaj63v1a38+^4ft#v0=$!dtllj(')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 't3kl81p8dot55u)7z)%9k#%aaj63v1a38+^4ft#v0=$!dtllj(')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,11 +76,20 @@ WSGI_APPLICATION = 'poll_service.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DB_USERNAME = os.getenv('DB_USERNAME', 'postgres')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'docker')
+
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '5432')
+DB_NAME = os.getenv('DB_NAME', 'polls')
+
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+)
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(default=DATABASE_URL)
 }
 
 
